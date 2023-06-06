@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+struct Defno {      
+    struct Defno *esq; 
+    int valor;  
+    struct Defno *dir;
+};
+typedef struct Defno arvore;
+
+int tipo;
+
+arvore * achaPai(arvore *r, int v)
+{   if(r == NULL)   
+        return NULL;
+    else
+        if(v <= r->valor)
+            if(r->esq == NULL)
+                return r;
+            else    
+                return achaPai(r->esq, v);
+        else
+            if(r->dir == NULL)
+                return r;
+            else
+                return achaPai(r->dir, v);
+}
+
+int imprimeArvore(arvore *r) {
+        if(r != NULL)
+        {
+                if(tipo == 1){
+                        printf(" %d", r->valor);
+                        imprimeArvore(r->esq);
+                        imprimeArvore(r->dir);
+                }
+                if(tipo == 2){
+                        imprimeArvore(r->esq);
+                        printf(" %d", r->valor);
+                        imprimeArvore(r->dir);
+                }
+                if(tipo == 3){
+                    imprimeArvore(r->esq);
+                    imprimeArvore(r->dir);
+                    printf(" %d", r->valor);
+                }
+                }
+        return 0;
+        }
+int main(){
+    arvore *raiz, *pai, *aux;
+    int tam, Ncasos, c, d, noh;
+    
+    raiz = NULL;
+    scanf("%d", &Ncasos);
+    
+    for(c=1; c<=Ncasos; c++){
+        raiz = NULL;
+        
+        scanf("%d", &tam);
+        for(d=0; d<tam; d++){
+                scanf("%d", &noh);
+                
+                aux = (arvore *) malloc(sizeof(arvore));
+                aux->valor = noh;
+                aux->esq = NULL;
+                aux->dir = NULL;
+                
+                pai = achaPai(raiz, noh);
+                if(pai == NULL)
+                    raiz = aux;
+                else
+                    if(noh <= pai->valor)
+                        pai->esq = aux;
+                    else 
+                        pai->dir = aux;
+        }
+        
+        printf("Case %d:", c);
+        
+        printf("\nPre.:");
+        tipo = 1;
+        imprimeArvore(raiz);
+        
+        printf("\nIn..:");
+        tipo = 2;
+        imprimeArvore(raiz);
+        
+        printf("\nPost:");
+        tipo = 3;
+        imprimeArvore(raiz);
+        
+        printf("\n\n");
+    }
+    return 0;
+}
+
